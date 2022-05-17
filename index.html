@@ -42,7 +42,30 @@
   for (const a of map.entries()) log(a);
 </script>
 
-## 이터러블/ 이터레이터 프로토콜 - 이터러블 : 이터레이터를 리턴하는
-[Symbol.iterator]() 를 가진 값 - 이터레이터: { value, done} 객체를 리턴하는
-next() 를 가진 값 - 이터러블/이터레이터 프로토콜 : 이터러블을 for...of, 전개
-연산자 등과 함께 동작하도록한 규약
+### 사용자 정의 이터러블
+
+<script>
+  const iterable = {
+    [Symbol.iterator]() {
+      let i = 3;
+      return {
+        next() {
+          return i == 0 ? { done: true } : { value: i--, done: false };
+        },
+        [Symbol.iterator]() {
+          return this;
+        },
+      };
+    },
+  };
+  let iterator = iterable[Symbol.iterator]();
+  for (const a of iterator) log(a);
+  for (const a of iterable) log(a);
+</script>
+
+<script>
+  console.clear();
+  const a = [1, 2];
+  // a[Symbol.iterator] = null;
+  log([...a, ...arr, ...set, ...map]);
+</script>
