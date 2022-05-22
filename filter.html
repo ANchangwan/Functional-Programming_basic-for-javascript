@@ -1,0 +1,28 @@
+<script>
+  const product = [
+    { name: "a", price: 20000 },
+    { name: "b", price: 15000 },
+    { name: "c", price: 12000 },
+    { name: "d", price: 25000 },
+  ];
+</script>
+
+<script>
+  const log = console.log;
+
+  const filter = (f, iter) => {
+    let res = [];
+    for (const a of product) {
+      if (f(a)) res.push(a);
+    }
+    return res;
+  };
+
+  log(...filter((a) => a.price < 20000), product);
+
+  let over20000 = [];
+  for (const a of product) {
+    if (a.price >= 20000) over20000.push(a);
+  }
+  log(...over20000);
+</script>
