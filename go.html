@@ -1,0 +1,94 @@
+<script>
+  const log = console.log;
+</script>
+
+<script>
+  const proudct = [
+    {
+      name: "반팔티",
+      price: 15000,
+    },
+    {
+      name: "긴팔티",
+      price: 20000,
+    },
+    {
+      name: "핸드폰케이스",
+      price: 15000,
+    },
+    {
+      name: "후드티",
+      price: 30000,
+    },
+    {
+      name: "바지",
+      price: 25000,
+    },
+  ];
+</script>
+
+<script>
+  const reduce = (f, acc, iter) => {
+    if (!iter) {
+      iter = acc[Symbol.iterator]();
+      acc = iter.next().value;
+    }
+    for (const n of iter) {
+      acc = f(acc, n);
+    }
+    return acc;
+  };
+  const map = (f, iter) => {
+    res = [];
+    for (const a of iter) {
+      res.push(f(a));
+    }
+    return res;
+  };
+
+  const filter = (f, iter) => {
+    let res = [];
+    for (const a of product) {
+      if (f(a)) res.push(a);
+    }
+    return res;
+  };
+</script>
+
+// go, pipe
+
+<script>
+  const go = (...args) => reduce((a, f) => f(a), args);
+  const pipe =
+    (f, ...fs) =>
+    (...as) =>
+      go(f(...as), ...fs);
+
+  go(
+    add(0, 1),
+    (a) => a + 1,
+    (a) => a + 10,
+    (a) => a + 100,
+    log
+  );
+
+  const f = pipe(
+    (a, b) => a + b,
+    (a) => a + 10,
+    (a) => a + 100
+  );
+
+  const add = (a, b) => a + b;
+
+  log(f(0, 1));
+</script>
+
+<script>
+  go(
+    product,
+    (product) => filter((p) => p.price < 20000, product),
+    (proudct) => map((p) => p.price, proudct),
+    (prices) => reduce(add, prices),
+    log
+  );
+</script>
