@@ -1,0 +1,35 @@
+<script>
+  const log = console.log;
+  const L = {};
+</script>
+
+<script>
+  log([...[1, 2], 3, 4, ...[5, 6], ...[7, 8, 9]]);
+  const isIterable = (a) => a && a[Symbol.iterator];
+  L.flatten = function* (iter) {
+    for (const a of iter) {
+      if (isIterable(a)) {
+        for (const b of a) yield b;
+      } else yield a;
+    }
+  };
+
+  //   yield *를 활용하여 코드를 짧게 만들 수 있음
+  L.flatten2 = function* (iter) {
+    for (const a of iter) {
+      if (isIterable) yield* a;
+      else yield a;
+    }
+  };
+
+  //   L.deepFlat 깊은 Iterable을 모두 펼치고 싶을 때
+  L.deepFlat = function* (iter) {
+    for (const a of iter) {
+      if (isIterable) yield* f(a);
+      else yield a;
+    }
+  };
+
+  var it = L.flatten([...[1, 2], 3, 4, ...[5, 6], ...[7, 8, 9]]);
+  log([...it]);
+</script>

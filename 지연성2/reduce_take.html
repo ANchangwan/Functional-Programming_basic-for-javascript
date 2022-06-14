@@ -1,0 +1,93 @@
+<!-- <script src="./lib.js"></script> -->
+
+<script>
+  const curry =
+    (f) =>
+    (a, ..._) =>
+      _.length ? f(a, ..._) : (..._) => f(a, ..._);
+
+  const go = (...args) => {
+    reduce((a, f) => f(a), args);
+  };
+
+  const reduce = (f, acc, iter) => {
+    if (!iter) {
+      iter = acc[Symbol.iterator]();
+      acc = iter.next().value;
+    }
+    for (const a of iter) {
+      acc = f(acc, a);
+    }
+    return acc;
+  };
+  const log = console.log;
+</script>
+
+<!-- 결과를 만드는 함수 reduce, take -->
+
+<!-- reduce -->
+<script>
+  // const L = {};
+  // L.entries = function* (obj) {
+  //   for (const a of obj) yield [a, obj[a]];
+  // };
+
+  // const join = curry((seq = ",", iter) =>
+  //   reduce((a, b) => `${a}${seq}${b}`, iter)
+  // );
+
+  // const queryStr = (obj) =>
+  //   go(
+  //     obj,
+  //     Object.entries,
+  //     map(([k, v]) => `${k}=${v}`)
+  //   );
+  // log(queryStr({ limit: 10, offset: 10, type: "notice" }));
+</script>
+
+### take, find
+
+<script>
+  const users = [{ age: 32 }, { age: 31 }, { age: 37 }, { age: 25 }];
+
+  const find = (f, iter) => go(iter, filter(f));
+
+  log(find((u) => u > 30, users));
+</script>
+
+<!-- ### L.map  + take로 map 만들기 -->
+
+<script>
+  console.clear();
+  const L = {};
+
+  L.range = function* (l) {
+    let i = -1;
+    while (++i < l) {
+      yield i;
+    }
+  };
+
+  L.map = curry(function* (f, iter) {
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      yield f(a);
+    }
+    return res;
+  });
+
+  const map = curry((f, iter) => {
+    let res = [];
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      res.push(f(a));
+    }
+    return res;
+  });
+
+  log(map((a) => a + 10, L.range(4)));
+</script>
