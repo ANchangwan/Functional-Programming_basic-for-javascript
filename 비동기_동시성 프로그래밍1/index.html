@@ -1,0 +1,37 @@
+<script src="../fs.js"></script>
+
+<!-- #Promise -->
+
+<!-- ## 일급 -->
+<script>
+  //콜백 형식
+  function add10(a, callback) {
+    setTimeout(() => callback(a + 10), 100);
+  }
+  add10(5, (res) =>
+    add10(res, (res) => add10(res, (res) => add10(res, (res) => log(res))))
+  );
+  // 콜백 형식은 가독성이 좋지 않음
+
+  // promise 형식
+  // 콜백 지옥 해결
+  // 비동기 값을 일급으로 처리 => 비동기 상황을 값으로 다룸
+  // 대기,성공,실패를 값으로 다룸(중요)
+  function add20(a) {
+    return new Promise((resolve) => setTimeout(() => resolve(a + 20), 100));
+  }
+  var b = add20(5).then(add20).then(add20).then(log);
+  // promise형식은 가독성이 좋음
+</script>
+
+<script>
+  log("hello");
+  const delay100 = (a) =>
+    new Promise((resolve) => setTimeout(() => resolve(a), 100));
+
+  const go1 = (a, f) => (a instanceof Promise ? a.then(f) : f(a));
+  const add5 = (a) => a + 5;
+
+  const n1 = 10;
+  log(go1(go1(n1, add5), log));
+</script>
