@@ -35,3 +35,57 @@
   const n1 = 10;
   log(go1(go1(n1, add5), log));
 </script>
+
+<!-- ## Composition -->
+<!-- 모나드는 함수 합성을 안정하게 하기 위한 수단 -->
+
+<script type="module">
+  Array.of(1)
+    .map(g)
+    .map(f)
+    .forEach((r) => log(r));
+  []
+    .map(g)
+    .map(f)
+    .forEach((r) => log(r));
+
+  new Promise((resolve) => setTimeout(() => resolve(2), 200))
+    .then(g)
+    .then(f)
+    .then((r) => log(r));
+</script>
+
+<!-- kleisli Composition -->
+<script>
+  const user = [
+    { id: 1, name: "aa" },
+    { id: 2, name: "bb" },
+    { id: 3, name: "cc" },
+  ];
+
+  const getUserById = (id) => find((u) => u.id == id, user);
+  const g = ({ name }) => name;
+  const f = getUserById;
+
+  const fg = (id) =>
+    Promise.resolve(id)
+      .then(f)
+      .then(g)
+      .catch((a) => a);
+</script>
+
+<!-- go, pipe, reduce에서 비동기 제어 -->
+
+<script></script>
+
+<!-- promise.then의 중요한 규칙 -->
+<!-- // promise가 중첩되어 있어서 하나의 then으로 사용할 수 있다 -->
+<script>
+  Promise.resolve(Promise.resolve(1)).then(function (a) {
+    log(a);
+  });
+
+  new Promise((resolve) => resolve(new Promise((resolve) => resolve(1)))).then(
+    log
+  );
+</script>
