@@ -1,0 +1,53 @@
+<script src="../fx.js/lib.js"></script>
+
+<!-- 
+    ## 지연평가 + Promise - L.map, map, take
+ -->
+
+<script>
+  go(
+    [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
+    L.map((a) => Promise.resolve(a + 10)),
+    take(2),
+    log
+  );
+
+  go(
+    [2, 3, 4],
+    map((a) => Promise.resolve(a + 10)),
+    log
+  );
+
+  go(
+    [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
+    map((a) => a + 10),
+    log
+  );
+
+  go(
+    [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
+    map((a) => Promise.resolve(a + 10)),
+    log
+  );
+</script>
+
+<!-- 
+    ## kleisli Composition - Lfilter, filter, nop, take
+     => filter에서 지연평가와, 비동기 동시성(Promise를 동시에 지원하기위해서 )을 사용하기 위해서는 Kleisli Composition을 사용해야 한다.
+ -->
+
+<script>
+  console.clear();
+  go(
+    [1, 2, 3, 4, 5, 6],
+    // L.map((a) => Promise.resolve(a * a)),
+    L.map((a) => a * a),
+    L.filter((a) => {
+      log(a);
+      return a % 2;
+    }),
+    L.map((a) => a * a),
+    take(3),
+    log
+  );
+</script>
